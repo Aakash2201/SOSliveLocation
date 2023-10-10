@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Elcome SOS System</title>
+      <style>
+        html,
+        body,
+        #viewDiv {
+          padding: 0;
+          margin: 0;
+          height: 95%;
+          width: 100%;
+        }
+        input {
+         text-align: center;
+        }
+      </style>
+  
+      <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css">
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+      <script src="https://js.arcgis.com/4.27/"></script>
+      
+      <script>
+            require(["esri/config", "esri/Map", "esri/views/MapView", "esri/Graphic", "esri/geometry/Point"], function(esriConfig, Map, MapView, Graphic, Point) {
+        esriConfig.apiKey = "AAPKc555e7cc9f7e43a6b9eed5a1e0dcb2c9cntosbgcjFVEB5DYhSXbNmYaDrigKAAkqjnF2S-bFMTEFMOok6B0nIY016S3XNEt";
+
+        const map = new Map({
+          basemap: "arcgis-topographic"
+        });
+
+        const view = new MapView({
+          map: map,
+          center: [72.8347, 18.9220],
+          zoom: 13,
+          container: "viewDiv"
+        });
+
+        // Function to update the position of the dot on the map
+        function updateDotOnMap(latitude, longitude) {
+          const newPoint = new Point({
+            latitude: parseFloat(latitude),
+            longitude: parseFloat(longitude)
+          });
+
+          const newPointGraphic = new Graphic({
+            geometry: newPoint,
+            symbol: {
+              type: "simple-marker",
+              color: "red", // You can change the color as needed
+              size: "8px"
+            }
+          });
+
+          // Remove the existing dot from the map
+          view.graphics.removeAll();
+
+          // Add the new dot to the map
+          view.graphics.add(newPointGraphic);
+        }
+
+        // Handle form submission
+        const coordinatesForm = document.getElementById("coordinatesForm");
+        coordinatesForm.addEventListener("submit", function(event) {
+          event.preventDefault();
+
+          const latitude = document.getElementById("latitude").value;
+          const longitude = document.getElementById("longitude").value;
+
+          // Call the function to update the dot on the map
+          updateDotOnMap(latitude, longitude);
+        });
+      });
+
+      </script>
+    </head>
+    <body>
+        <div >
+            <nav class="navbar navbar-expand-lg bg-body-tertiary" >
+                <div class="container-fluid">
+                    <a class="navbar-brand"  href="#"><img src="https://elcome.sirv.com/WP_elcome.in/2015/07/E/l/H/Elcome-Primary-Logo-200pxH.png" style="width: 150px;" alt=""></a>
+                    <div id="inputForm" style="margin-top: 20px;">
+                      <form id="coordinatesForm" class="input-group mb-3" style="text-align: center;">      
+                        <input class="form-control" type="text" id="latitude" placeholder="latitude" name="latitude" required><br>
+                        <input class="form-control" type="text" id="longitude" placeholder="longitude" name="longitude" required><br>     
+                        <input class="btn btn-outline-secondary" type="submit" value="Update Map">
+                        <!-- <div class="input-group mb-3">
+                          <button  type="button" id="button-addon1">Button</button>
+                          <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1">
+                        </div> -->
+                      </form>
+                    </div>
+                    <!-- <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Features</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Pricing</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+                        </li>
+                        </ul>
+                    </div> -->
+                </div>
+          </nav>
+        </div>
+        
+        
+      <div id="viewDiv"></div>
+    </body>
+  </html>
